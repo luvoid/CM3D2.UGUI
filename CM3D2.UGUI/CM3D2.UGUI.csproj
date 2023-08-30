@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net35</TargetFramework>
+    <LangVersion>10.0</LangVersion>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <AssemblyName>CM3D2.UGUI</AssemblyName>
+    <RootNamespace>CM3D2.UGUI</RootNamespace>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <Authors>luvoid</Authors>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>LuVoid.CM3D2.UGUI</PackageId>
+    <Title>CM3D2.UGUI</Title>
+    <Version>$(AssemblyVersion)-preview</Version>
+  </PropertyGroup>
+  <!-- NuGet -->
+  <ItemGroup>
+    <PackageReference Include="LuVoid.UniverseUGUI.Mono" Version="1.6.1-preview" />
+    <PackageReference Include="UnityEngine" Version="5.6.1" />
+  </ItemGroup>
+  <!-- Assembly References -->
+  <ItemGroup>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>lib\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+</Project>
