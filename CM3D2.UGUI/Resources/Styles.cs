@@ -14,142 +14,240 @@ namespace CM3D2.UGUI.Resources
 		/// </summary>
 		public static readonly ReadOnlyUISkin AdvancedSkin;
 
-		public static readonly ReadOnlyPanelStyle BoxOutline;
-		public static readonly ReadOnlyPanelStyle BoxDark;
+		public static readonly ReadOnlyFrameStyle FrameOutline;
+		public static readonly ReadOnlyFrameStyle FrameDark;
 		public static readonly ReadOnlyButtonStyle ButtonRectangle;
 		public static readonly ReadOnlyButtonStyle ButtonCircle;
 		public static readonly ReadOnlyToggleStyle ToggleCheckbox;
 		public static readonly ReadOnlyToggleStyle ToggleButton;
 		public static readonly ReadOnlyToggleStyle ToggleButtonGroup;
 		public static readonly ReadOnlyInputFieldStyle InputField;
-		public static readonly ReadOnlyPanelStyle  Window;
-		public static readonly ReadOnlyPanelStyle  WindowDialog;
+		public static readonly ReadOnlyWindowStyle Window;
+		public static readonly ReadOnlyWindowStyle WindowDialog;
+		public static readonly ReadOnlyDropdownStyle Dropdown;
 
 		static Styles()
 		{
 			var defaultSkin = UISkin.Default;
 
-			ColorBlock colorBlock = new ColorBlock()
+			ColorBlock buttonColorBlock = new ColorBlock()
 			{
 				normalColor      = new Color32(255, 255, 255, 171),
 				highlightedColor = new Color32(255, 255, 255, 255),
 				pressedColor     = new Color32(255, 255, 255, 200),
 				disabledColor    = new Color32(100, 100, 100, 255),
-				colorMultiplier = 1f,
-				fadeDuration = 0.1f,
+				colorMultiplier  = 1f,
+				fadeDuration     = 0.1f,
 			};
 
-			Vector4 textPadding = new Vector4(3, 3, 3, 3);
+			ColorBlock inputFieldColorBlock = new ColorBlock()
+			{
+				normalColor      = Color.white,
+				highlightedColor = buttonColorBlock.highlightedColor,
+				pressedColor     = Color.white,
+				disabledColor    = buttonColorBlock.disabledColor,
+				colorMultiplier  = buttonColorBlock.colorMultiplier,
+				fadeDuration     = buttonColorBlock.fadeDuration,
+			};
+
+			TextComponentStyle textWhite = new()
+			{
+				Color = Color.white,
+				Alignment = TextAnchor.MiddleCenter,
+			};
+			TextComponentStyle textBlack = new()
+			{
+				Color = Color.black,
+				Alignment = TextAnchor.MiddleCenter,
+			};
+
+			SelectableComponentStyle backgroundButtonWhite = new()
+			{
+				Sprite = Sprites.CommonUI.PlateWhite,
+				Colors = buttonColorBlock,
+			};
+
+			LayoutGroupStyle textLayoutGroup = new LayoutGroupStyle()
+			{
+				Padding = new Vector4(3, 3, 3, 3),
+				Spacing = new Vector2(3, 3),
+			};
+			LayoutGroupStyle frameLayoutGroup = new LayoutGroupStyle()
+			{
+				Padding = new Vector4(6, 6, 6, 6),
+				Spacing = new Vector2(3, 3),
+			};
+
+
+
+			// ---------- Standard Skin ----------
 
 			var standardSkin = defaultSkin.DeepCopy();
-			StandardSkin = standardSkin.AsReadOnly();
 			standardSkin.Name = "CM3D2StandardSkin";
-			standardSkin.Text.Font = Fonts.NotoSansCJKjp.DemiLight;
-			standardSkin.Text.FontSize = 16;
+			standardSkin.Text = new()
+			{
+				Font = Fonts.NotoSansCJKjp.DemiLight,
+				FontSize = 16,
+			};
+			standardSkin.LayoutGroup = new() 
+			{ 
+				Spacing = new Vector2(3, 3),
+			};
+			StandardSkin = standardSkin.AsReadOnly();
 
-			var boxOutline = standardSkin.Box;
-			BoxOutline = boxOutline.AsReadOnly();
-			boxOutline.Name = "CM3D2BoxOutline";
-			boxOutline.Text.Color = Color.white;
-			boxOutline.Background.Sprite = Sprites.CommonUI.LineframeWhite;
-			boxOutline.Padding = textPadding;
+			var frameOutline = standardSkin.Frame = new()
+			{
+				Name = "CM3D2FrameOutline",
+				Text = textWhite,
+				Background = new() { Sprite = Sprites.CommonUI.LineframeWhite, },
+				LayoutGroup = frameLayoutGroup,
+			};
+			FrameOutline = frameOutline.AsReadOnly();
 
-			var boxDark = boxOutline.DeepCopy();
-			BoxDark = boxDark.AsReadOnly();
-			boxDark.Name = "CM3D2BoxDark";
-			boxDark.Background.Sprite = Sprites.CommonUI.PlateBlack100;
-			boxDark.Padding = textPadding;
+			var frameDark = new FrameStyle(frameOutline)
+			{
+				Name = "CM3D2FrameDark",
+				Background = new() { Sprite = Sprites.CommonUI.PlateBlack, },
+				LayoutGroup = frameLayoutGroup,
+			};
+			FrameDark = frameDark.AsReadOnly();
 
-			var buttonRectangle = standardSkin.Button;
+			var buttonRectangle = standardSkin.Button = new()
+			{
+				Name = "CM3D2ButtonRectangle",
+				Text = textBlack,
+				Background = backgroundButtonWhite.Copy(),
+				LayoutGroup = textLayoutGroup,
+			};
 			ButtonRectangle = buttonRectangle.AsReadOnly();
-			buttonRectangle.Name = "CM3D2ButtonRectangle";
-			buttonRectangle.Text.Color = Color.black;
-			buttonRectangle.Background.Sprite = Sprites.CommonUI.PlateWhite;
-			buttonRectangle.Background.Colors = colorBlock;
-			buttonRectangle.Padding = textPadding;
 
-			var buttonCircle = ButtonRectangle.DeepCopy();
+			var buttonCircle = new ButtonStyle(buttonRectangle)
+			{
+				Name = "CM3D2ButtonCircle",
+				Background = new() { Sprite = Sprites.CommonUI.MainButton, },
+				LayoutGroup = textLayoutGroup,
+			};
 			ButtonCircle = buttonCircle.AsReadOnly();
-			buttonCircle.Name = "CM3D2ButtonCircle";
-			buttonCircle.Background.Sprite = Sprites.CommonUI.MainButton;
-			buttonCircle.Padding = textPadding;
 
-			var toggleCheckbox = standardSkin.Toggle;
+			var toggleCheckbox = standardSkin.Toggle = new()
+			{
+				Name = "CM3D2ToggleCheckbox",
+				Text = new(textWhite) { Alignment = TextAnchor.MiddleLeft, },
+				Background = backgroundButtonWhite.Copy(),
+				Overflow = new Vector4(0, 0, -1, 0),
+				LayoutGroup = new(textLayoutGroup)
+				{ 
+					Padding = new(0, textLayoutGroup.Padding.y, textLayoutGroup.Padding.z, textLayoutGroup.Padding.w),
+				},
+				Checkmark = new() { Sprite = Sprites.CommonUI.Check02, },
+				CheckboxSize = new Vector2(20, 20),
+				CheckboxPadding = new Vector4(1, -1, 4, 4),
+			};
 			ToggleCheckbox = toggleCheckbox.AsReadOnly();
-			toggleCheckbox.Name = "CM3D2ToggleCheckbox";
-			toggleCheckbox.Text.Color = Color.white;
-			toggleCheckbox.Background.Sprite = Sprites.CommonUI.PlateWhite;
-			toggleCheckbox.Background.Colors = colorBlock;
-			toggleCheckbox.Checkmark.Sprite = Sprites.CommonUI.Check02;
-			toggleCheckbox.CheckboxSize = new Vector2(20, 20);
-			toggleCheckbox.Overflow.x = 0;
-			toggleCheckbox.Overflow.z = -1;
-			toggleCheckbox.Padding = textPadding;
-			toggleCheckbox.Padding.x += toggleCheckbox.CheckboxSize.x + textPadding.x;
-			toggleCheckbox.CheckboxPadding = new Vector4(1, -1, 4, 4);
 
-			var toggleButton = new ToggleStyle();
+			var toggleButton = new ToggleStyle()
+			{
+				Name = "CM3D2ToggleButton",
+				Text = textBlack,
+				Background = backgroundButtonWhite.Copy(),
+				LayoutGroup = textLayoutGroup,
+				Checkmark = new()
+				{
+					Sprite = Sprites.CommonUI.LineframeGray,
+					Color = new Color32(0, 86, 255, 255),
+				},
+				CheckboxPadding = new Vector4(1, 1, 1, 1),
+			};
 			ToggleButton = toggleButton.AsReadOnly();
-			toggleButton.Name = "CM3D2ToggleButton";
-			toggleButton.Text.Color = Color.black;
-			toggleButton.Background.Sprite = Sprites.CommonUI.PlateWhite;
-			toggleButton.Background.Colors = colorBlock;
-			toggleButton.Checkmark.Sprite = Sprites.CommonUI.LineframeGray;
-			toggleButton.Checkmark.Color = new Color32(0, 86, 255, 255);
-			toggleButton.Padding = textPadding;
-			toggleButton.CheckboxPadding = new Vector4(1, 1, 1, 1);
 
-			var toggleButtonGroup = toggleButton.DeepCopy();
+			var toggleButtonGroup = new ToggleStyle(toggleButton)
+			{
+				Name = "CM3D2ToggleButtonGroup",
+				Checkmark = new()
+				{
+					Sprite = Sprites.CommonUI.LineframeWhite,
+					Color = new Color32(255, 226, 0, 255),
+				},
+			};
 			ToggleButtonGroup = toggleButtonGroup.AsReadOnly();
-			toggleButtonGroup.Name = "CM3D2ToggleButtonGroup";
-			toggleButtonGroup.Checkmark.Sprite = Sprites.CommonUI.LineframeWhite;
-			toggleButtonGroup.Checkmark.Color = new Color32(255, 226, 0, 255);
-			toggleButtonGroup.Padding = textPadding;
 
-			var inputField = standardSkin.InputField;
+			var inputField = standardSkin.InputField = new()
+			{
+				Name = "CM3D2InputField",
+				Text = new(textBlack) { Alignment = TextAnchor.MiddleLeft, },
+				Background = new()
+				{
+					Sprite = Sprites.CommonUI.PlateWhite,
+					Colors = inputFieldColorBlock,
+				},
+				LayoutGroup = textLayoutGroup,
+			};
 			InputField = inputField.AsReadOnly();
-			inputField.Name = "CM3D2InputField";
-			inputField.Text.Color = Color.black;
-			inputField.Background.Sprite = Sprites.CommonUI.PlateWhite;
-			inputField.Background.Colors = colorBlock;
-			inputField.Background.Colors.normalColor = Color.white;
-			inputField.Background.Colors.pressedColor = Color.white;
-			inputField.Padding = textPadding;
 
-			standardSkin.ScrollInputField = InputField.DeepCopy();
-			standardSkin.ScrollInputField.Name = "CM3D2ScrollInputField";
+			standardSkin.ScrollInputField = new(inputField)
+			{
+				Name = "CM3D2ScrollInputField",
+			};
 
-			var window = standardSkin.Window;
+			var window = standardSkin.Window = new()
+			{
+				Name = "CM3D2Window",
+				Background = new() { Sprite = Sprites.CommonUI.PlateBlack, },
+				LayoutGroup = new(frameLayoutGroup) { Padding = new Vector4(4, 4, 4, 4), },
+				Titlebar = new()
+				{
+					Text = new(textWhite) { Alignment = TextAnchor.MiddleLeft, },
+					UseBackground = false,
+					LayoutGroup = new(frameLayoutGroup) { ChildAlignment = TextAnchor.MiddleRight, },
+				}
+			};
 			Window = window.AsReadOnly();
-			window.Name = "CM3D2Window";
-			window.Text.Alignment = TextAnchor.UpperLeft;
-			window.Text.Color = Color.white;
-			window.Background.Sprite = Sprites.CommonUI.PlateBlack100;
-			window.ContentOffset = new Vector2(0, -20);
-			window.Padding = new Vector4(4, 4, 20, 4);
 
-			var windowDialog = window.DeepCopy();
+			var windowDialog = new WindowStyle(window)
+			{
+				Name = "CM3D2WindowDialog",
+				Text = new(window.Text) { Alignment = TextAnchor.MiddleCenter, },
+				Background = new() { Sprite = Sprites.SystemUI.DialogFrame, },
+				Overflow = new Vector4(27, 27, 27, 27),
+				LayoutGroup = new(frameLayoutGroup) { Padding = new Vector4(0, 0, 0, 0), },
+			};
 			WindowDialog = windowDialog.AsReadOnly();
-			windowDialog.Name = "CM3D2WindowDialog";
-			windowDialog.Text.Alignment = TextAnchor.UpperCenter;
-			windowDialog.Text.Color = Color.white;
-			windowDialog.Background.Sprite = Sprites.SystemUI.DialogFrame;
-			windowDialog.ContentOffset = new Vector2(0, -20);
-			windowDialog.Padding = new Vector4(0, 0, 20, 0);
-			windowDialog.Overflow = new Vector4(27, 27, 27, 27);
+
+			var dropdown = standardSkin.Dropdown = new()
+			{
+				Name = "CM3D2Dropdown",
+				Text = new(textBlack) { Alignment = TextAnchor.MiddleLeft, },
+				Background = backgroundButtonWhite.Copy(),
+				LayoutGroup = textLayoutGroup,
+				Arrow = new() { Sprite = Sprites.SceneEdit.PulldownArrow, },
+				Viewport = new()
+				{
+					Background = new() { Sprite = Sprites.CommonUI.PlateWhite, },
+					LayoutGroup = frameLayoutGroup,
+				},
+				Item = toggleButtonGroup.DeepCopy(),
+			};
+			Dropdown = dropdown.AsReadOnly();
 
 
-			// --- Advanced Skin ----
+
+			// ---------- Advanced Skin ----------
+
 			var advancedSkin = standardSkin.ShallowCopy();
+			advancedSkin.Name = "CM3D2AdvanceSkin";
 			AdvancedSkin = advancedSkin.AsReadOnly();
 
-			var boxDarkTransparent = advancedSkin.Box = boxDark.DeepCopy();
-			boxDarkTransparent.Name = "CM3D2BoxDarkTransparent";
-			boxDarkTransparent.Background.Color = new Color(1, 1, 1, 0.5f);
+			var frameDarkTransparent = advancedSkin.Frame = new(frameDark)
+			{
+				Name = "CM3D2FrameDarkTransparent",
+				Background = new(frameDark.Background) { Color = new Color(1, 1, 1, 0.5f), },
+			};
 
-			var windowDialogTransparent = advancedSkin.Window = windowDialog.DeepCopy();
-			windowDialogTransparent.Name = "CM3D2BoxDarkTransparent";
-			windowDialogTransparent.Background.Color = new Color(1, 1, 1, 0.5f);
+			var windowDialogTransparent = advancedSkin.Window = new(windowDialog)
+			{
+				Name = "CM3D2WindowDialogTransparent",
+				Background = new(windowDialog.Background) { Color = new Color(1, 1, 1, 0.5f), },
+			};
 		}
 	}
 }

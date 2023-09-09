@@ -8,18 +8,38 @@
     <RootNamespace>CM3D2.UGUI</RootNamespace>
     <FileVersion>$(AssemblyVersion)</FileVersion>
     <Authors>luvoid</Authors>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <AssemblyVersion>0.1.4.0</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>LuVoid.CM3D2.UGUI</PackageId>
     <Title>CM3D2.UGUI</Title>
-    <Version>$(AssemblyVersion)-preview</Version>
+    <Version>0.0.0-alpha.0</Version>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Resources\commonui.bundle" />
+    <None Remove="Resources\sceneedit.bundle" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\commonui.bundle" />
+    <EmbeddedResource Include="Resources\sceneedit.bundle" />
+  </ItemGroup>
   <!-- NuGet -->
   <ItemGroup>
-    <PackageReference Include="LuVoid.UniverseUGUI.Mono" Version="1.6.1-preview" />
+    <PackageReference Include="BepInEx.BaseLib" Version="5.4.21" />
     <PackageReference Include="UnityEngine" Version="5.6.1" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageReference Include="LuVoid.UniverseUGUI.Mono" Version="1.6.3-preview" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+      <ProjectReference Include="..\..\UniverseUGUI\src\UniverseUGUI.csproj" />
   </ItemGroup>
   <!-- Assembly References -->
   <ItemGroup>
@@ -28,4 +48,39 @@
       <Private>False</Private>
     </Reference>
   </ItemGroup>
+  <!-- Tasks -->
+  <UsingTask TaskName="_EvaluatePackageVersion" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Version ParameterType="System.String" Required="true" />
+      <BuiltAssemblyVersion ParameterType="System.String" Required="true" />
+      <EvaluatedVersion ParameterType="System.String" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+                EvaluatedVersion = System.Text.RegularExpressions.Regex.Replace(
+                    Version + ":" + BuiltAssemblyVersion,
+                    @"\d+\.\d+\.\d+(-[0-9A-Za-z-]+)?(?:\.\d+)?:(\d+\.\d+\.\d+)(\.\d+)?",
+                    "$2$1$3"
+                );
+            ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+  <Target Name="_GetPackageVersion" AfterTargets="build">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="BuiltAssemblyIdentity" />
+    </GetAssemblyIdentity>
+    <ItemGroup>
+      <BuiltAssemblyVersion Include="@(BuiltAssemblyIdentity->'%(Version)')" />
+    </ItemGroup>
+    <Message Text="BuiltAssemblyVersion: @(BuiltAssemblyVersion)" Importance="high" />
+    <_EvaluatePackageVersion Version="$(Version)" BuiltAssemblyVersion="@(BuiltAssemblyVersion)">
+      <Output TaskParameter="EvaluatedVersion" PropertyName="PackageVersion" />
+    </_EvaluatePackageVersion>
+    <Message Text="PackageVersion: $(PackageVersion)" Importance="high" />
+  </Target>
+  <Target Name="CreateMonoDebugSymbols" AfterTargets="build" Condition="'$(Configuration)' == 'Debug'">
+    <Exec Command="for /f &quot;usebackq delims=|&quot; %25%25f in (`dir /b *.dll`) do &quot;$(ProjectDir)lib\pdb2mdb.exe&quot; %25%25f" WorkingDirectory="$(OutputPath)" />
+  </Target>
 </Project>

@@ -4,7 +4,10 @@ namespace CM3D2.UGUI.Resources.Sprites
 {
 	public static class SceneEdit
 	{
-		public static readonly Texture2D AtlasSceneEdit = ResourcesSafe.Load<Texture2D>("sceneedit/mainmenu/atlas/atlassceneedit");
+		//[System.Obsolete("This atlas varies between game versions.")]
+		//public static readonly Texture2D AtlasSceneEdit = ResourcesSafe.Load<Texture2D>("sceneedit/mainmenu/atlas/atlassceneedit");
+
+		public static readonly Texture2D AtlasSceneEdit = Bundles.SceneEdit.LoadAsset<Texture2D>("atlassceneedit");
 
 		public static readonly Sprite SliderRail = SpriteHelper.CreateSprite(
 			"cm3d2_edit_slideberrail", // Yes, this is how KISS spelled it.

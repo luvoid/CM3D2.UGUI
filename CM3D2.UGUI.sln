@@ -3,18 +3,44 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CM3D2.UGUI", "CM3D2.UGUI\CM3D2.UGUI.csproj", "{E629563B-550D-4C40-A687-EEB349991CDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CM3D2.UGUI", "CM3D2.UGUI\CM3D2.UGUI.csproj", "{E629563B-550D-4C40-A687-EEB349991CDA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniverseUGUI", "..\UniverseUGUI\src\UniverseUGUI.csproj", "{EF7BF423-4143-4DB2-BBAB-368598C8F248}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_UnityEditorLegacy|Any CPU = Debug_UnityEditorLegacy|Any CPU
 		Debug|Any CPU = Debug|Any CPU
+		Release_IL2CPP_Interop|Any CPU = Release_IL2CPP_Interop|Any CPU
+		Release_IL2CPP_Unhollower|Any CPU = Release_IL2CPP_Unhollower|Any CPU
+		Release_Mono|Any CPU = Release_Mono|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E629563B-550D-4C40-A687-EEB349991CDA}.Debug_UnityEditorLegacy|Any CPU.ActiveCfg = Debug|Any CPU
+		{E629563B-550D-4C40-A687-EEB349991CDA}.Debug_UnityEditorLegacy|Any CPU.Build.0 = Debug|Any CPU
 		{E629563B-550D-4C40-A687-EEB349991CDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E629563B-550D-4C40-A687-EEB349991CDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E629563B-550D-4C40-A687-EEB349991CDA}.Release_IL2CPP_Interop|Any CPU.ActiveCfg = Release|Any CPU
+		{E629563B-550D-4C40-A687-EEB349991CDA}.Release_IL2CPP_Interop|Any CPU.Build.0 = Release|Any CPU
+		{E629563B-550D-4C40-A687-EEB349991CDA}.Release_IL2CPP_Unhollower|Any CPU.ActiveCfg = Release|Any CPU
+		{E629563B-550D-4C40-A687-EEB349991CDA}.Release_IL2CPP_Unhollower|Any CPU.Build.0 = Release|Any CPU
+		{E629563B-550D-4C40-A687-EEB349991CDA}.Release_Mono|Any CPU.ActiveCfg = Release|Any CPU
+		{E629563B-550D-4C40-A687-EEB349991CDA}.Release_Mono|Any CPU.Build.0 = Release|Any CPU
 		{E629563B-550D-4C40-A687-EEB349991CDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E629563B-550D-4C40-A687-EEB349991CDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF7BF423-4143-4DB2-BBAB-368598C8F248}.Debug_UnityEditorLegacy|Any CPU.ActiveCfg = Debug_UnityEditorLegacy|Any CPU
+		{EF7BF423-4143-4DB2-BBAB-368598C8F248}.Debug_UnityEditorLegacy|Any CPU.Build.0 = Debug_UnityEditorLegacy|Any CPU
+		{EF7BF423-4143-4DB2-BBAB-368598C8F248}.Debug|Any CPU.ActiveCfg = Debug_UnityEditorLegacy|Any CPU
+		{EF7BF423-4143-4DB2-BBAB-368598C8F248}.Debug|Any CPU.Build.0 = Debug_UnityEditorLegacy|Any CPU
+		{EF7BF423-4143-4DB2-BBAB-368598C8F248}.Release_IL2CPP_Interop|Any CPU.ActiveCfg = Release_IL2CPP_Interop|Any CPU
+		{EF7BF423-4143-4DB2-BBAB-368598C8F248}.Release_IL2CPP_Interop|Any CPU.Build.0 = Release_IL2CPP_Interop|Any CPU
+		{EF7BF423-4143-4DB2-BBAB-368598C8F248}.Release_IL2CPP_Unhollower|Any CPU.ActiveCfg = Release_IL2CPP_Unhollower|Any CPU
+		{EF7BF423-4143-4DB2-BBAB-368598C8F248}.Release_IL2CPP_Unhollower|Any CPU.Build.0 = Release_IL2CPP_Unhollower|Any CPU
+		{EF7BF423-4143-4DB2-BBAB-368598C8F248}.Release_Mono|Any CPU.ActiveCfg = Release_Mono|Any CPU
+		{EF7BF423-4143-4DB2-BBAB-368598C8F248}.Release_Mono|Any CPU.Build.0 = Release_Mono|Any CPU
+		{EF7BF423-4143-4DB2-BBAB-368598C8F248}.Release|Any CPU.ActiveCfg = Release_Mono|Any CPU
+		{EF7BF423-4143-4DB2-BBAB-368598C8F248}.Release|Any CPU.Build.0 = Release_Mono|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
