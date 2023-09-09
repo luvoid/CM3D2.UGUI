@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using UniverseLib;
-using UniverseLib.UGUI;
 using UniverseLib.UI;
 
 namespace CM3D2.UGUI
@@ -24,40 +23,6 @@ namespace CM3D2.UGUI
 			var tUIBase = UniversalUI.RegisterUI<T>(id, wrapper.Update);
 			wrapper.UIBase = tUIBase;
 			return tUIBase;
-		}
-
-		/// <inheritdoc cref="UniversalUI.RegisterUGUI"/>
-		public static UGUIBase RegisterUGUI(string id, Action updateMethod = null, params IUniversalUGUIBehaviour[] behaviours)
-		{
-			UpdateMethodWrapper wrapper = new UpdateMethodWrapper(updateMethod);
-			var uguiBase = UniversalUI.RegisterUGUI(id, wrapper.Update, behaviours);
-			uguiBase.Skin = (UGUISkin)Resources.Styles.StandardSkin; 
-			wrapper.UIBase = uguiBase;
-			return uguiBase;
-		}
-
-		/// <inheritdoc cref="UniversalUI.RegisterUGUI"/>
-		public static UGUIBase RegisterUGUI(string id, params IUniversalUGUIBehaviour[] behaviours)
-		{
-			return RegisterUGUI(id, null, behaviours);
-		}
-
-		/// <inheritdoc cref="UniversalUI.RegisterUGUI{T}"/>
-		public static T RegisterUGUI<T>(string id, Action updateMethod = null, params IUniversalUGUIBehaviour[] behaviours)
-			where T : UGUIBase
-		{
-			UpdateMethodWrapper wrapper = new UpdateMethodWrapper(updateMethod);
-			var uguiBase = UniversalUI.RegisterUGUI<T>(id, wrapper.Update, behaviours);
-			uguiBase.Skin = (UGUISkin)Resources.Styles.StandardSkin;
-			wrapper.UIBase = uguiBase;
-			return uguiBase;
-		}
-
-		/// <inheritdoc cref="RegisterUGUI{T}"/>
-		public static T RegisterUGUI<T>(string id, params IUniversalUGUIBehaviour[] behaviours)
-			where T : UGUIBase
-		{
-			return RegisterUGUI<T>(id, null, behaviours);
 		}
 
 		private class UpdateMethodWrapper
