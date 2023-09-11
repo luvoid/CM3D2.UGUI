@@ -16,14 +16,8 @@ namespace CM3D2.UGUI.Resources.Sprites
 			return sprite;
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="name"></param>
-		/// <param name="texture"></param>
-		/// <param name="border">The border sizes of the Sprite (X=left, Y=bottom, Z=right, W=top).</param>
-		/// <returns></returns>
 		/// <exception cref="ArgumentNullException"></exception>
+		/// <inheritdoc cref="CreateSprite(string, Texture2D, Rect, Vector4, float)"/>
 		public static Sprite CreateSprite(string name, Texture2D texture, Vector4 border)
 		{
 			if (texture == null) throw new ArgumentNullException("texture");

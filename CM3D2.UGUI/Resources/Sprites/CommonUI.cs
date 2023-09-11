@@ -26,6 +26,17 @@ namespace CM3D2.UGUI.Resources.Sprites
 		public static readonly Sprite PlateBlack = ResourcesSafe.Load<Sprite>("commonui/uguicommon/cm3d2_common_plate_black");
 
 		/// <summary>
+		/// A black bar with a rounded top. 
+		/// Used for window titlebars.
+		/// </summary>
+		public static readonly Sprite PlateBlackTopWin = SpriteHelper.CreateSprite(
+			"cm3d2_common_plate_black_top_win",
+			AtlasCommon,
+			new Rect(484, 413, 19, 19),
+			new Vector4(8, 8, 8, 8)
+		);
+
+		/// <summary>
 		/// The white outline of a rectangle with rounded edges.
 		/// Used with <see cref="PlateBlack"/> to add a white outline.
 		/// </summary>
@@ -34,6 +45,17 @@ namespace CM3D2.UGUI.Resources.Sprites
 			AtlasCommon,
 			new Rect(495, 346, 11, 11),
 			new Vector4(6, 6, 6, 6)
+		);
+
+		/// <summary>
+		/// The white outline of a rectangle with rounded edges that fades away at the top.
+		/// Used with <see cref="PlateBlack"/> and <see cref="PlateBlackTopWin"/> to add a white outline to windows.
+		/// </summary>
+		public static readonly Sprite LineframeWhiteD = SpriteHelper.CreateSprite(
+			"cm3d2_common_lineframe_white_d",
+			AtlasCommon,
+			new Rect(67, 4, 11, 11),
+			new Vector4(4, 0, 4, 5)
 		);
 
 		/// <summary>
@@ -76,7 +98,45 @@ namespace CM3D2.UGUI.Resources.Sprites
 			new Rect(359, 170, 118, 118)
 		);
 
+		/// <summary>
+		/// A small white circle with a <c>_</c>.
+		/// Used for titlebar minimize button.
+		/// </summary>
+		public static readonly Sprite WinBtnMin = SpriteHelper.CreateSprite(
+			"cm3d2_common_win_btn_min",
+			AtlasCommon,
+			new Rect(101, 16, 16, 16)
+		);
 
+		/// <summary>
+		/// A small white circle with a <i>?</i>.
+		/// Used for titlebar help button.
+		/// </summary>
+		public static readonly Sprite WinBtnHelp = SpriteHelper.CreateSprite(
+			"cm3d2_common_win_btn_help",
+			AtlasCommon,
+			new Rect(84, 16, 16, 16)
+		);
+
+		/// <summary>
+		/// A small white circle with an <i>X</i>.
+		/// Used for titlebar end button.
+		/// </summary>
+		public static readonly Sprite WinBtnEnd = SpriteHelper.CreateSprite(
+			"cm3d2_common_win_btn_end",
+			AtlasCommon,
+			new Rect(67, 16, 16, 16)
+		);
+
+		/// <summary>
+		/// A small white circle with an <i>R</i>.
+		/// Used for titlebar reset button.
+		/// </summary>
+		public static readonly Sprite WinBtnReset = SpriteHelper.CreateSprite(
+			"cm3d2_common_win_btn_reset",
+			AtlasCommon,
+			new Rect(478, 341, 16, 16)
+		);
 
 		private static class Texture2DExtensions
 		{

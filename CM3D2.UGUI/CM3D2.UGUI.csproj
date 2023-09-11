@@ -36,7 +36,7 @@
     <PackageReference Include="UnityEngine" Version="5.6.1" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <PackageReference Include="LuVoid.UniverseUGUI.Mono" Version="1.6.3-preview" />
+    <PackageReference Include="LuVoid.UniverseUGUI.Mono" Version="1.6.4-alpha.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
       <ProjectReference Include="..\..\UniverseUGUI\src\UniverseUGUI.csproj" />

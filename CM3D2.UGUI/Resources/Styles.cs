@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Security.Cryptography;
+using UnityEngine;
 using UnityEngine.UI;
 using UniverseLib.UI.Styles;
 
@@ -37,7 +38,7 @@ namespace CM3D2.UGUI.Resources
 				pressedColor     = new Color32(255, 255, 255, 200),
 				disabledColor    = new Color32(100, 100, 100, 255),
 				colorMultiplier  = 1f,
-				fadeDuration     = 0.1f,
+				fadeDuration     = 0.2f,
 			};
 
 			ColorBlock inputFieldColorBlock = new ColorBlock()
@@ -50,15 +51,23 @@ namespace CM3D2.UGUI.Resources
 				fadeDuration     = buttonColorBlock.fadeDuration,
 			};
 
-			TextComponentStyle textWhite = new()
+			TextComponentStyle smallTextWhite = new()
 			{
 				Color = Color.white,
 				Alignment = TextAnchor.MiddleCenter,
+				FontSize = 16,
 			};
-			TextComponentStyle textBlack = new()
+			TextComponentStyle labelTextWhite = new()
+			{
+				Color = Color.white,
+				Alignment = TextAnchor.MiddleCenter,
+				FontSize = 18,
+			};
+			TextComponentStyle buttonTextBlack = new()
 			{
 				Color = Color.black,
 				Alignment = TextAnchor.MiddleCenter,
+				FontSize = 20,
 			};
 
 			SelectableComponentStyle backgroundButtonWhite = new()
@@ -69,13 +78,24 @@ namespace CM3D2.UGUI.Resources
 
 			LayoutGroupStyle textLayoutGroup = new LayoutGroupStyle()
 			{
-				Padding = new Vector4(3, 3, 3, 3),
-				Spacing = new Vector2(3, 3),
+				Padding = new Vector4(7, 7, 1, 3),
+				Spacing = new Vector2(9, 9),
+			};
+			LayoutGroupStyle buttonLayoutGroup = new LayoutGroupStyle()
+			{
+				Padding = new Vector4(5, 5, 3, 7),
+				Spacing = new Vector2(9, 9),
+				ChildAlignment = TextAnchor.MiddleCenter,
 			};
 			LayoutGroupStyle frameLayoutGroup = new LayoutGroupStyle()
 			{
-				Padding = new Vector4(6, 6, 6, 6),
-				Spacing = new Vector2(3, 3),
+				Padding = new Vector4(10, 10, 10, 10),
+				Spacing = new Vector2(9, 9),
+			};
+			LayoutGroupStyle windowLayoutGroup = new LayoutGroupStyle()
+			{
+				Padding = new Vector4(18, 18, 16, 16),
+				Spacing = new Vector2(9, 9),
 			};
 
 
@@ -91,14 +111,25 @@ namespace CM3D2.UGUI.Resources
 			};
 			standardSkin.LayoutGroup = new() 
 			{ 
-				Spacing = new Vector2(3, 3),
+				Spacing = frameLayoutGroup.Spacing,
 			};
 			StandardSkin = standardSkin.AsReadOnly();
+
+			var label = standardSkin.Label = new()
+			{
+				Name = "CM3D2Label",
+				Text = new(labelTextWhite) { Alignment = TextAnchor.MiddleLeft },
+				UseBackground = false,
+				LayoutGroup = new(textLayoutGroup)
+				{
+					Padding = new Vector4(0, 0, textLayoutGroup.Padding.z, textLayoutGroup.Padding.w),
+				}
+			};
 
 			var frameOutline = standardSkin.Frame = new()
 			{
 				Name = "CM3D2FrameOutline",
-				Text = textWhite,
+				Text = labelTextWhite,
 				Background = new() { Sprite = Sprites.CommonUI.LineframeWhite, },
 				LayoutGroup = frameLayoutGroup,
 			};
@@ -115,9 +146,9 @@ namespace CM3D2.UGUI.Resources
 			var buttonRectangle = standardSkin.Button = new()
 			{
 				Name = "CM3D2ButtonRectangle",
-				Text = textBlack,
+				Text = buttonTextBlack,
 				Background = backgroundButtonWhite.Copy(),
-				LayoutGroup = textLayoutGroup,
+				LayoutGroup = buttonLayoutGroup,
 			};
 			ButtonRectangle = buttonRectangle.AsReadOnly();
 
@@ -125,14 +156,14 @@ namespace CM3D2.UGUI.Resources
 			{
 				Name = "CM3D2ButtonCircle",
 				Background = new() { Sprite = Sprites.CommonUI.MainButton, },
-				LayoutGroup = textLayoutGroup,
+				LayoutGroup = buttonLayoutGroup,
 			};
 			ButtonCircle = buttonCircle.AsReadOnly();
 
 			var toggleCheckbox = standardSkin.Toggle = new()
 			{
 				Name = "CM3D2ToggleCheckbox",
-				Text = new(textWhite) { Alignment = TextAnchor.MiddleLeft, },
+				Text = new(labelTextWhite) { Alignment = TextAnchor.MiddleLeft, },
 				Background = backgroundButtonWhite.Copy(),
 				Overflow = new Vector4(0, 0, -1, 0),
 				LayoutGroup = new(textLayoutGroup)
@@ -148,9 +179,9 @@ namespace CM3D2.UGUI.Resources
 			var toggleButton = new ToggleStyle()
 			{
 				Name = "CM3D2ToggleButton",
-				Text = textBlack,
+				Text = buttonTextBlack,
 				Background = backgroundButtonWhite.Copy(),
-				LayoutGroup = textLayoutGroup,
+				LayoutGroup = buttonLayoutGroup,
 				Checkmark = new()
 				{
 					Sprite = Sprites.CommonUI.LineframeGray,
@@ -174,7 +205,11 @@ namespace CM3D2.UGUI.Resources
 			var inputField = standardSkin.InputField = new()
 			{
 				Name = "CM3D2InputField",
-				Text = new(textBlack) { Alignment = TextAnchor.MiddleLeft, },
+				Text = new()
+				{
+					Color = Color.black,
+					Alignment = TextAnchor.MiddleLeft,
+				},
 				Background = new()
 				{
 					Sprite = Sprites.CommonUI.PlateWhite,
@@ -193,33 +228,49 @@ namespace CM3D2.UGUI.Resources
 			{
 				Name = "CM3D2Window",
 				Background = new() { Sprite = Sprites.CommonUI.PlateBlack, },
-				LayoutGroup = new(frameLayoutGroup) { Padding = new Vector4(4, 4, 4, 4), },
+				LayoutGroup = windowLayoutGroup,
 				Titlebar = new()
 				{
-					Text = new(textWhite) { Alignment = TextAnchor.MiddleLeft, },
-					UseBackground = false,
-					LayoutGroup = new(frameLayoutGroup) { ChildAlignment = TextAnchor.MiddleRight, },
-				}
+					Text = new(smallTextWhite) { Alignment = TextAnchor.MiddleLeft, },
+					Background = new()
+					{
+						Sprite = Sprites.CommonUI.PlateBlackTopWin,
+						Color = Color.black,
+					},
+					LayoutGroup = new(frameLayoutGroup)
+					{
+						Padding = new Vector4(4, 4, 0, 0),
+						Spacing = new Vector2(4, 4),
+						ChildAlignment = TextAnchor.MiddleRight,
+					},
+				},
+				TitlebarHeight = 20,
 			};
 			Window = window.AsReadOnly();
 
 			var windowDialog = new WindowStyle(window)
 			{
 				Name = "CM3D2WindowDialog",
-				Text = new(window.Text) { Alignment = TextAnchor.MiddleCenter, },
 				Background = new() { Sprite = Sprites.SystemUI.DialogFrame, },
 				Overflow = new Vector4(27, 27, 27, 27),
 				LayoutGroup = new(frameLayoutGroup) { Padding = new Vector4(0, 0, 0, 0), },
+				Titlebar = new(window.Titlebar) 
+				{
+					Text = new(window.Titlebar.Text) { Alignment = TextAnchor.MiddleCenter, },
+					UseBackground = false,
+				},
+				TitlebarHeight = 25,
 			};
 			WindowDialog = windowDialog.AsReadOnly();
 
 			var dropdown = standardSkin.Dropdown = new()
 			{
 				Name = "CM3D2Dropdown",
-				Text = new(textBlack) { Alignment = TextAnchor.MiddleLeft, },
+				Text = buttonTextBlack,
 				Background = backgroundButtonWhite.Copy(),
 				LayoutGroup = textLayoutGroup,
 				Arrow = new() { Sprite = Sprites.SceneEdit.PulldownArrow, },
+				ArrowSize = new Vector2(18, 15),
 				Viewport = new()
 				{
 					Background = new() { Sprite = Sprites.CommonUI.PlateWhite, },
